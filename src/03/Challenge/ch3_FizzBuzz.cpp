@@ -15,8 +15,18 @@ int main(){
     std::cout << "Enter a positive integer: " << std::flush;
     std::cin >> n;
 
-    // Write your code here
-    
+    for (int i=1; i < n; i++){
+        std::string tobe_printed = std::to_string(i);
+        if (i != 0 && i % 3 == 0 && i % 5 == 0){
+            tobe_printed = "FizzBuzz";
+        } else if(i % 3 == 0){
+            tobe_printed = "Fizz";
+        } else if(i % 5 == 0){
+            tobe_printed = "Buzz";
+        }
+
+        std::cout << tobe_printed << std::endl;
+    }
     std::cout << std::endl << std::flush;
     return 0;
 }
