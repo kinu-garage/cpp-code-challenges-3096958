@@ -62,8 +62,76 @@ bool quick_sort(int *arr, int index_low, int index_high){
     return true;
 }
 
-bool merge_sort(int *arr, int index_low, int index_high){
-    //TBD
+int* merge(int * arr_merged, int *arr_a, int *arr_b){
+    int index_mergedlist = 0;
+    // Length of arr_b is always the same or smaller than arr_a.
+    int size_b = sizeof(arr_b) / sizeof(arr_b[0]);
+    for (int i=0; i < size_b; i++, index_mergedlist++){
+        if (arr_a != nullptr && arr_b != nullptr){
+            if (arr_a[i] < arr_b[i]){
+                arr_merged[index_mergedlist] = arr_a[i];
+            }
+            else if (arr_b[i] < arr_a[i]){
+                arr_merged[index_mergedlist] = arr_b[i];
+            }
+        }
+        else{
+            break;
+        }
+    }
+    //TODO Had to consider if only either one of the lists is not yet empty but skipping that case here for now.
+    return arr_merged;
+}
+
+/**
+ * Split a list to 2 lists, then run recursively until the input list
+ * is no longer splitable.  
+ */
+int* merge_sort(int *arr, int len){
+    if (len==1){
+        return arr;
+    }
+    int src_start_index = 0; // Index to start copying from
+    int largest_index_a = len/2;
+    int largest_index_b = largest_index_a;
+    int arr_merged[len];
+    
+    if (len % 2 != 0){
+        // When len is odd, 
+        largest_index_a ++;
+    }
+
+    int array_1sthalf[largest_index_a];
+    int array_2ndhalf[largest_index_a];
+
+    std::cout << "largest_index_a: " << largest_index_a << " Address of array_1sthalf: " << static_cast<void*>(&array_1sthalf) << " array_2ndhalf: " << static_cast<void*>(&array_2ndhalf) << std::endl;
+
+    // Populate array_1sthalf
+    for (int i = 0; i < largest_index_a; i++){
+        array_1sthalf[i] = arr[i];
+    }
+    // 2nd half list
+    src_start_index = largest_index_a;
+    std::cout << "Input arr len: " << len << " largest_index_a: " << largest_index_a << " For arr_a, src_start_index: " << src_start_index << std::endl;
+    for (int i = 0; i < len - largest_index_a; i++){
+        array_2ndhalf[i] = arr[src_start_index + i];
+    }
+    std::cout << "array_1sthalf: [";
+    print_array(array_1sthalf, largest_index_a);
+    std::cout << "] array_2ndhalf: [";
+    print_array(array_2ndhalf, largest_index_b);
+    std::cout << "]" << std::endl;
+
+    int* array_1sthalf_sorted = merge_sort(array_1sthalf, largest_index_a);
+    int* array_2ndhalf_sorted = merge_sort(array_2ndhalf, largest_index_a);
+    int len_a = sizeof(array_1sthalf_sorted);
+    int len_b = sizeof(array_2ndhalf_sorted);
+    if (len_a != len_b){
+        throw std::invalid_argument("For now both array must be the same length. Sorry.");
+    }
+    merge(arr_merged, array_1sthalf_sorted, array_2ndhalf_sorted);
+    print_array(arr_merged, len);
+    return arr_merged;
 }
 
 // sort_array()
@@ -72,15 +140,16 @@ bool merge_sort(int *arr, int index_low, int index_high){
 //           arr: A pointer acting as the array to sort.
 //           n: The size of the array.
 // Returns: A boolean value: True on success, false otherwise.
-bool sort_array(int *arr, int size_arr){
-    return quick_sort(arr, 0, size_arr -1);
+int* sort_array(int *arr, int size_arr){
+    //return quick_sort(arr, 0, size_arr -1);
+    return merge_sort(arr, size_arr);
 }
 
 // Main function
 int main(){
     // The following array will be treated as an array of length len. 
     //int array[] = {11, 2, 9, 1, 3, 5, 0, 6, 8, 10, 12, 7, 4};
-    int array[] = {9, 2, 1, 3, 5, 0, 6, 8, 7, 4, 10, 11, 12, 13, 14};
+    int array[] = {9, 2, 1, 3, 5, 0, 4, 10, 11, 6, 8, 7};
     //const int len = 11; // Don't exceed the length of the array below!
     //const int len = 4;
     const int len = sizeof(array) / sizeof(array[0]);
@@ -95,9 +164,9 @@ int main(){
     sort_array(array, len); // Sort the array
 
     // Print the sorted array
-    std::cout << "  Sorted Array: [ ";
-    print_array(array, len);
-    std::cout << "]" << std::endl << std::endl << std::flush;
+    //std::cout << "**Final result** Sorted Array: [ ";
+    //print_array(array, len);
+    //std::cout << "]" << std::endl << std::endl << std::flush;
 
     return 0;
 }
