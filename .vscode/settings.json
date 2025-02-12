@@ -74,6 +74,28 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "typeinfo": "cpp",
-    "cstring": "cpp"
-  }
+    "cstring": "cpp",
+    "__tuple": "cpp",
+    "bitset": "cpp",
+    "codecvt": "cpp",
+    "complex": "cpp",
+    "condition_variable": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "unordered_set": "cpp",
+    "iomanip": "cpp",
+    "mutex": "cpp",
+    "numbers": "cpp",
+    "semaphore": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "typeindex": "cpp",
+    "__nullptr": "cpp",
+    "__config": "cpp"
+  },
+  "ros.distro": "humble"
 }
